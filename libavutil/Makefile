@@ -56,6 +56,10 @@ HEADERS = adler32.h                                                     \
           hwcontext_videotoolbox.h                                      \
           hwcontext_vdpau.h                                             \
           hwcontext_vulkan.h                                            \
+          hwcontext_nvtegra.h                                           \
+          nvtegra.h                                                     \
+          nvhost_ioctl.h                                                \
+          nvmap_ioctl.h                                                 \
           iamf.h                                                        \
           imgutils.h                                                    \
           intfloat.h                                                    \
@@ -222,6 +226,7 @@ OBJS-$(CONFIG_VDPAU)                    += hwcontext_vdpau.o
 OBJS-$(CONFIG_VULKAN)                   += hwcontext_vulkan.o vulkan.o
 
 OBJS-$(!CONFIG_VULKAN)                  += hwcontext_stub.o
+OBJS-$(CONFIG_NVTEGRA)                  += nvtegra.o hwcontext_nvtegra.o
 
 OBJS += $(COMPAT_OBJS:%=../compat/%)
 
@@ -254,6 +259,9 @@ SKIPHEADERS-$(CONFIG_VULKAN)           += hwcontext_vulkan.h vulkan.h   \
                                           vulkan_functions.h            \
                                           vulkan_loader.h
 SKIPHEADERS-$(CONFIG_SHADER_COMPRESSION) += zlib_utils.h
+SKIPHEADERS-$(CONFIG_NVTEGRA)          += nvtegra.h                     \
+                                          nvtegra_host1x.h              \
+                                          hwcontext_nvtegra.h
 
 TESTPROGS = adler32                                                     \
             aes                                                         \

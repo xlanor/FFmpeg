@@ -723,6 +723,7 @@ OBJS-$(CONFIG_IPNS_GATEWAY_PROTOCOL)     += ipfsgateway.o
 TLS-OBJS-$(CONFIG_GNUTLS)                += tls_gnutls.o
 TLS-OBJS-$(CONFIG_LIBTLS)                += tls_libtls.o
 TLS-OBJS-$(CONFIG_MBEDTLS)               += tls_mbedtls.o
+TLS-OBJS-$(CONFIG_LIBNX)                 += tls_libnx.o
 TLS-OBJS-$(CONFIG_OPENSSL)               += tls_openssl.o
 TLS-OBJS-$(CONFIG_SECURETRANSPORT)       += tls_securetransport.o
 TLS-OBJS-$(CONFIG_SCHANNEL)              += tls_schannel.o
@@ -741,8 +742,10 @@ OBJS-$(CONFIG_LIBRTMPS_PROTOCOL)         += librtmp.o
 OBJS-$(CONFIG_LIBRTMPT_PROTOCOL)         += librtmp.o
 OBJS-$(CONFIG_LIBRTMPTE_PROTOCOL)        += librtmp.o
 OBJS-$(CONFIG_LIBSMBCLIENT_PROTOCOL)     += libsmbclient.o
+OBJS-$(CONFIG_LIBSMB2_PROTOCOL)          += libsmb2.o
 OBJS-$(CONFIG_LIBSRT_PROTOCOL)           += libsrt.o
 OBJS-$(CONFIG_LIBSSH_PROTOCOL)           += libssh.o
+OBJS-$(CONFIG_LIBSSH2_PROTOCOL)          += libssh2.o
 OBJS-$(CONFIG_LIBZMQ_PROTOCOL)           += libzmq.o
 
 # Objects duplicated from other libraries for shared builds

@@ -499,6 +499,14 @@ enum AVPixelFormat {
 
     AV_PIX_FMT_OHCODEC, /// hardware decoding through openharmony
 
+    /**
+     * Hardware surfaces for Tegra devices.
+     *
+     * data[0..2] points to memory-mapped buffers containing frame data
+     * buf[0] contains an AVBufferRef to an AVNTegraMap
+     */
+    AV_PIX_FMT_NVTEGRA,
+
     AV_PIX_FMT_NB         ///< number of pixel formats, DO NOT USE THIS if you want to link with shared libav* because the number of formats might differ between versions
 };
 

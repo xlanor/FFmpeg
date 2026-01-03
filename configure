@@ -275,11 +275,13 @@ External library support:
   --enable-librtmp         enable RTMP[E] support via librtmp [no]
   --enable-libshine        enable fixed-point MP3 encoding via libshine [no]
   --enable-libsmbclient    enable Samba protocol via libsmbclient [no]
+  --enable-libsmb2         enable Samba protocol via libsmb2 [no]
   --enable-libsnappy       enable Snappy compression, needed for hap encoding [no]
   --enable-libsoxr         enable Include libsoxr resampling [no]
   --enable-libspeex        enable Speex de/encoding via libspeex [no]
   --enable-libsrt          enable Haivision SRT protocol via libsrt [no]
   --enable-libssh          enable SFTP protocol via libssh [no]
+  --enable-libssh2         enable SFTP protocol via libssh2 [no]
   --enable-libsvtav1       enable AV1 encoding via SVT [no]
   --enable-libsvtjpegxs    enable JPEGXS encoding/decoding via SVT [no]
   --enable-libtensorflow   enable TensorFlow as a DNN module backend
@@ -324,6 +326,7 @@ External library support:
   --enable-decklink        enable Blackmagic DeckLink I/O support [no]
   --enable-mbedtls         enable mbedTLS, needed for https support
                            if openssl, gnutls or libtls is not used [no]
+  --enable-libnx           enable libnx, needed for https support
   --enable-mediacodec      enable Android MediaCodec support [no]
   --enable-mediafoundation enable encoding via MediaFoundation [auto]
   --disable-metal          disable Apple Metal framework [autodetect]
@@ -369,6 +372,7 @@ External library support:
   --disable-videotoolbox   disable VideoToolbox code [autodetect]
   --disable-vulkan         disable Vulkan code [autodetect]
   --enable-vulkan-static   statically link to libvulkan [no]
+  --enable-nvtegra         enable nvtegra code [no]
 
 Toolchain options:
   --arch=ARCH              select architecture [$arch]
@@ -2019,6 +2023,7 @@ EXTERNAL_AUTODETECT_LIBRARY_LIST="
     mediafoundation
     metal
     schannel
+    libnx
     sdl2
     securetransport
     sndio
@@ -2122,11 +2127,13 @@ EXTERNAL_LIBRARY_LIST="
     librtmp
     libshine
     libsmbclient
+    libsmb2
     libsnappy
     libsoxr
     libspeex
     libsrt
     libssh
+    libssh2
     libsvtav1
     libsvtjpegxs
     libtensorflow
@@ -2200,6 +2207,7 @@ HWACCEL_LIBRARY_LIST="
     libvpl
     mmal
     opencl
+    nvtegra
 "
 
 DOCUMENT_LIST="
@@ -3403,6 +3411,7 @@ videotoolbox_hwaccel_deps="videotoolbox pthreads"
 videotoolbox_hwaccel_extralibs="-framework QuartzCore"
 vulkan_deps="threads"
 vulkan_deps_any="libdl LoadLibrary"
+nvtegra_deps="gpl"
 
 apv_vulkan_hwaccel_deps="vulkan spirv_compiler"
 apv_vulkan_hwaccel_select="apv_decoder"
@@ -3450,6 +3459,8 @@ h264_videotoolbox_hwaccel_deps="videotoolbox"
 h264_videotoolbox_hwaccel_select="h264_decoder"
 h264_vulkan_hwaccel_deps="vulkan"
 h264_vulkan_hwaccel_select="h264_decoder"
+h264_nvtegra_hwaccel_deps="nvtegra"
+h264_nvtegra_hwaccel_select="h264_decoder"
 hevc_d3d11va_hwaccel_deps="d3d11va DXVA_PicParams_HEVC"
 hevc_d3d11va_hwaccel_select="hevc_decoder"
 hevc_d3d11va2_hwaccel_deps="d3d11va DXVA_PicParams_HEVC"
@@ -3468,16 +3479,22 @@ hevc_videotoolbox_hwaccel_deps="videotoolbox"
 hevc_videotoolbox_hwaccel_select="hevc_decoder"
 hevc_vulkan_hwaccel_deps="vulkan"
 hevc_vulkan_hwaccel_select="hevc_decoder"
+hevc_nvtegra_hwaccel_deps="nvtegra"
+hevc_nvtegra_hwaccel_select="hevc_decoder"
 mjpeg_nvdec_hwaccel_deps="nvdec"
 mjpeg_nvdec_hwaccel_select="mjpeg_decoder"
 mjpeg_vaapi_hwaccel_deps="vaapi"
 mjpeg_vaapi_hwaccel_select="mjpeg_decoder"
+mjpeg_nvtegra_hwaccel_deps="nvtegra"
+mjpeg_nvtegra_hwaccel_select="mjpeg_decoder"
 mpeg1_nvdec_hwaccel_deps="nvdec"
 mpeg1_nvdec_hwaccel_select="mpeg1video_decoder"
 mpeg1_vdpau_hwaccel_deps="vdpau"
 mpeg1_vdpau_hwaccel_select="mpeg1video_decoder"
 mpeg1_videotoolbox_hwaccel_deps="videotoolbox"
 mpeg1_videotoolbox_hwaccel_select="mpeg1video_decoder"
+mpeg1_nvtegra_hwaccel_deps="nvtegra"
+mpeg1_nvtegra_hwaccel_select="mpeg1video_decoder"
 mpeg2_d3d11va_hwaccel_deps="d3d11va"
 mpeg2_d3d11va_hwaccel_select="mpeg2video_decoder"
 mpeg2_d3d11va2_hwaccel_deps="d3d11va"
@@ -3494,6 +3511,8 @@ mpeg2_vdpau_hwaccel_deps="vdpau"
 mpeg2_vdpau_hwaccel_select="mpeg2video_decoder"
 mpeg2_videotoolbox_hwaccel_deps="videotoolbox"
 mpeg2_videotoolbox_hwaccel_select="mpeg2video_decoder"
+mpeg2_nvtegra_hwaccel_deps="nvtegra"
+mpeg2_nvtegra_hwaccel_select="mpeg2video_decoder"
 mpeg4_nvdec_hwaccel_deps="nvdec"
 mpeg4_nvdec_hwaccel_select="mpeg4_decoder"
 mpeg4_vaapi_hwaccel_deps="vaapi"
@@ -3510,6 +3529,8 @@ prores_raw_vulkan_hwaccel_deps="vulkan spirv_compiler"
 prores_raw_vulkan_hwaccel_select="prores_raw_decoder"
 prores_vulkan_hwaccel_deps="vulkan spirv_compiler"
 prores_vulkan_hwaccel_select="prores_decoder"
+mpeg4_nvtegra_hwaccel_deps="nvtegra"
+mpeg4_nvtegra_hwaccel_select="mpeg4_decoder"
 vc1_d3d11va_hwaccel_deps="d3d11va"
 vc1_d3d11va_hwaccel_select="vc1_decoder"
 vc1_d3d11va2_hwaccel_deps="d3d11va"
@@ -3524,10 +3545,14 @@ vc1_vaapi_hwaccel_deps="vaapi"
 vc1_vaapi_hwaccel_select="vc1_decoder"
 vc1_vdpau_hwaccel_deps="vdpau"
 vc1_vdpau_hwaccel_select="vc1_decoder"
+vc1_nvtegra_hwaccel_deps="nvtegra"
+vc1_nvtegra_hwaccel_select="vc1_decoder"
 vp8_nvdec_hwaccel_deps="nvdec"
 vp8_nvdec_hwaccel_select="vp8_decoder"
 vp8_vaapi_hwaccel_deps="vaapi"
 vp8_vaapi_hwaccel_select="vp8_decoder"
+vp8_nvtegra_hwaccel_deps="nvtegra"
+vp8_nvtegra_hwaccel_select="vp8_decoder"
 vp9_d3d11va_hwaccel_deps="d3d11va DXVA_PicParams_VP9"
 vp9_d3d11va_hwaccel_select="vp9_decoder"
 vp9_d3d11va2_hwaccel_deps="d3d11va DXVA_PicParams_VP9"
@@ -3546,6 +3571,8 @@ vp9_videotoolbox_hwaccel_deps="videotoolbox"
 vp9_videotoolbox_hwaccel_select="vp9_decoder"
 vp9_vulkan_hwaccel_deps="vulkan vulkan_1_4"
 vp9_vulkan_hwaccel_select="vp9_decoder"
+vp9_nvtegra_hwaccel_deps="nvtegra"
+vp9_nvtegra_hwaccel_select="vp9_decoder"
 vvc_vaapi_hwaccel_deps="vaapi VAPictureParameterBufferVVC"
 vvc_vaapi_hwaccel_select="vvc_decoder"
 wmv3_d3d11va_hwaccel_select="vc1_d3d11va_hwaccel"
@@ -3555,6 +3582,7 @@ wmv3_dxva2_hwaccel_select="vc1_dxva2_hwaccel"
 wmv3_nvdec_hwaccel_select="vc1_nvdec_hwaccel"
 wmv3_vaapi_hwaccel_select="vc1_vaapi_hwaccel"
 wmv3_vdpau_hwaccel_select="vc1_vdpau_hwaccel"
+wmv3_nvtegra_hwaccel_select="vc1_nvtegra_hwaccel"
 
 # hardware-accelerated codecs
 d3d12va_encode_deps="d3d12va ID3D12VideoEncoder d3d12_encoder_feature"
@@ -4109,7 +4137,7 @@ securetransport_conflict="openssl gnutls libtls mbedtls"
 shared_protocol_deps="mmap stdatomic unistd_h"
 srtp_protocol_select="rtp_protocol srtp"
 tcp_protocol_select="network"
-tls_protocol_deps_any="gnutls openssl schannel securetransport libtls mbedtls"
+tls_protocol_deps_any="gnutls openssl schannel securetransport libtls mbedtls libnx"
 tls_protocol_select="tcp_protocol"
 # TODO: Support libtls.
 dtls_protocol_deps_any="openssl schannel gnutls mbedtls"
@@ -4132,9 +4160,11 @@ librtmps_protocol_deps="librtmp"
 librtmpt_protocol_deps="librtmp"
 librtmpte_protocol_deps="librtmp"
 libsmbclient_protocol_deps="libsmbclient gplv3"
+libsmb2_protocol_deps="libsmb2"
 libsrt_protocol_deps="libsrt"
 libsrt_protocol_select="network"
 libssh_protocol_deps="libssh"
+libssh2_protocol_deps="libssh2"
 libtls_conflict="openssl gnutls mbedtls"
 libzmq_protocol_deps="libzmq"
 libzmq_protocol_select="network"
@@ -4171,8 +4201,10 @@ cropdetect_filter_deps="gpl"
 deinterlace_qsv_filter_deps="libmfx"
 deinterlace_qsv_filter_select="qsvvpp"
 deinterlace_vaapi_filter_deps="vaapi"
+deinterlace_nvtegra_filter_deps="nvtegra"
 delogo_filter_deps="gpl"
 denoise_vaapi_filter_deps="vaapi"
+denoise_nvtegra_filter_deps="nvtegra"
 derain_filter_select="dnn"
 deshake_filter_select="pixelutils"
 deshake_opencl_filter_deps="opencl"
@@ -4263,6 +4295,7 @@ scdet_filter_select="scene_sad"
 scdet_vulkan_filter_deps="vulkan spirv_compiler"
 select_filter_select="scene_sad"
 sharpness_vaapi_filter_deps="vaapi"
+sharpness_nvtegra_filter_deps="nvtegra"
 showcqt_filter_deps="avformat swscale"
 showcqt_filter_suggest="libfontconfig libfreetype"
 signature_filter_deps="gpl avcodec avformat"
@@ -6377,6 +6410,10 @@ case $target_os in
         ;;
     minix)
         ;;
+    horizon)
+        enable section_data_rel_ro
+        add_extralibs -lnx
+        ;;
     none)
         ;;
     *)
@@ -7435,9 +7472,12 @@ enabled librubberband     && require_pkg_config librubberband "rubberband >= 1.8
 enabled libshine          && require_pkg_config libshine shine shine/layer3.h shine_encode_buffer
 enabled libsmbclient      && { check_pkg_config libsmbclient smbclient libsmbclient.h smbc_init ||
                                require libsmbclient libsmbclient.h smbc_init -lsmbclient; }
+enabled libsmb2           && { check_pkg_config libsmb2 libsmb2 smb2/smb2-errors.h SMB2_STATUS_SUCCESS ||
+                               require libsmb2 smb2/smb2-errors.h SMB2_STATUS_SUCCESS -lsmb2; }
 enabled libsnappy         && require libsnappy snappy-c.h snappy_compress -lsnappy -lstdc++
 enabled libsoxr           && require libsoxr soxr.h soxr_create -lsoxr
 enabled libssh            && require_pkg_config libssh "libssh >= 0.6.0" libssh/sftp.h sftp_init
+enabled libssh2           && check_pkg_config libssh2 libssh2 libssh2.h LIBSSH2_VERSION
 enabled libspeex          && require_pkg_config libspeex speex speex/speex.h speex_decoder_init
 enabled libsrt            && require_pkg_config libsrt "srt >= 1.3.0" srt/srt.h srt_socket
 enabled libsvtav1         && require_pkg_config libsvtav1 "SvtAv1Enc >= 0.9.0" EbSvtAv1Enc.h svt_av1_enc_init_handle
@@ -8275,6 +8315,10 @@ case $target_os in
     if test_cpp_condition sys/version.h "defined(__DJGPP__) && __DJGPP__ == 2 && __DJGPP_MINOR__ == 5"; then
         disable memalign
     fi
+    ;;
+horizon)
+    disable sysctl
+    disable sysctlbyname
     ;;
 esac
 
