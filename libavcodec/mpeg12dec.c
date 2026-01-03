@@ -795,6 +795,9 @@ static const enum AVPixelFormat mpeg1_hwaccel_pixfmt_list_420[] = {
 #if CONFIG_MPEG1_VDPAU_HWACCEL
     AV_PIX_FMT_VDPAU,
 #endif
+#if CONFIG_MPEG1_NVTEGRA_HWACCEL
+    AV_PIX_FMT_NVTEGRA,
+#endif
     AV_PIX_FMT_YUV420P,
     AV_PIX_FMT_NONE
 };
@@ -821,6 +824,9 @@ static const enum AVPixelFormat mpeg2_hwaccel_pixfmt_list_420[] = {
 #endif
 #if CONFIG_MPEG2_VIDEOTOOLBOX_HWACCEL
     AV_PIX_FMT_VIDEOTOOLBOX,
+#endif
+#if CONFIG_MPEG2_NVTEGRA_HWACCEL
+    AV_PIX_FMT_NVTEGRA,
 #endif
     AV_PIX_FMT_YUV420P,
     AV_PIX_FMT_NONE
@@ -2663,6 +2669,9 @@ const FFCodec ff_mpeg1video_decoder = {
 #if CONFIG_MPEG1_VIDEOTOOLBOX_HWACCEL
                                HWACCEL_VIDEOTOOLBOX(mpeg1),
 #endif
+#if CONFIG_MPEG1_NVTEGRA_HWACCEL
+                               HWACCEL_NVTEGRA(mpeg1),
+#endif
                                NULL
                            },
 };
@@ -2736,6 +2745,9 @@ const FFCodec ff_mpeg2video_decoder = {
 #endif
 #if CONFIG_MPEG2_VIDEOTOOLBOX_HWACCEL
                         HWACCEL_VIDEOTOOLBOX(mpeg2),
+#endif
+#if CONFIG_MPEG2_NVTEGRA_HWACCEL
+                        HWACCEL_NVTEGRA(mpeg2),
 #endif
                         NULL
                     },
