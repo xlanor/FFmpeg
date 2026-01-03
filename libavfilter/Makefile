@@ -278,9 +278,11 @@ OBJS-$(CONFIG_DEFLATE_FILTER)                += vf_neighbor.o
 OBJS-$(CONFIG_DEFLICKER_FILTER)              += vf_deflicker.o
 OBJS-$(CONFIG_DEINTERLACE_QSV_FILTER)        += vf_vpp_qsv.o
 OBJS-$(CONFIG_DEINTERLACE_VAAPI_FILTER)      += vf_deinterlace_vaapi.o vaapi_vpp.o
+OBJS-$(CONFIG_DEINTERLACE_NVTEGRA_FILTER)    += vf_deinterlace_nvtegra.o nvtegra_vpp.o
 OBJS-$(CONFIG_DEJUDDER_FILTER)               += vf_dejudder.o
 OBJS-$(CONFIG_DELOGO_FILTER)                 += vf_delogo.o
 OBJS-$(CONFIG_DENOISE_VAAPI_FILTER)          += vf_misc_vaapi.o vaapi_vpp.o
+OBJS-$(CONFIG_DENOISE_NVTEGRA_FILTER)        += vf_misc_nvtegra.o nvtegra_vpp.o
 OBJS-$(CONFIG_DESHAKE_OPENCL_FILTER)        += vf_deshake_opencl.o opencl.o \
                                                 opencl/deshake.o transform.o
 OBJS-$(CONFIG_DESHAKE_FILTER)                += vf_deshake.o transform.o
@@ -494,6 +496,7 @@ OBJS-$(CONFIG_SETSAR_FILTER)                 += vf_aspect.o
 OBJS-$(CONFIG_SETTB_FILTER)                  += settb.o
 OBJS-$(CONFIG_SHARPEN_NPP_FILTER)            += vf_sharpen_npp.o
 OBJS-$(CONFIG_SHARPNESS_VAAPI_FILTER)        += vf_misc_vaapi.o vaapi_vpp.o
+OBJS-$(CONFIG_SHARPNESS_NVTEGRA_FILTER)      += vf_misc_nvtegra.o nvtegra_vpp.o
 OBJS-$(CONFIG_SHEAR_FILTER)                  += vf_shear.o
 OBJS-$(CONFIG_SHOWINFO_FILTER)               += vf_showinfo.o
 OBJS-$(CONFIG_SHOWPALETTE_FILTER)            += vf_showpalette.o
@@ -675,6 +678,7 @@ SKIPHEADERS-$(CONFIG_QSVVPP)                 += qsvvpp.h stack_internal.h
 SKIPHEADERS-$(CONFIG_OPENCL)                 += opencl.h
 SKIPHEADERS-$(CONFIG_VAAPI)                  += vaapi_vpp.h stack_internal.h
 SKIPHEADERS-$(CONFIG_VULKAN)                 += vulkan_filter.h
+SKIPHEADERS-$(CONFIG_NVTEGRA)                += nvtegra_vpp.h
 
 TOOLS     = graph2dot
 TESTPROGS = drawutils filtfmts formats integral
