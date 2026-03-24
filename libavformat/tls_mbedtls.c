@@ -26,6 +26,7 @@
 #include <mbedtls/platform.h>
 #include <mbedtls/ssl.h>
 #include <mbedtls/x509_crt.h>
+#include <mbedtls/bignum.h>
 #include <mbedtls/debug.h>
 #include <mbedtls/timing.h>
 #ifdef MBEDTLS_PSA_CRYPTO_C
@@ -59,7 +60,7 @@ static int mbedtls_x509_fingerprint(char *cert_buf, size_t cert_sz, char **finge
         return AVERROR(EINVAL);
     }
 
-    if ((ret = mbedtls_sha256(crt.raw.p, crt.raw.len, md, 0)) != 0) {
+    if ((ret = mbedtls_sha256_ret(crt.raw.p, crt.raw.len, md, 0)) != 0) {
         mbedtls_x509_crt_free(&crt);
         return AVERROR(EINVAL);
     }
@@ -189,9 +190,21 @@ static int mbedtls_gen_x509_cert(mbedtls_pk_context *key, char *cert_buf, size_t
         return ret;
     }
 
-    if ((ret = mbedtls_x509write_crt_set_serial_raw(&crt, serial, sizeof(serial))) != 0) {
-        av_log(NULL, AV_LOG_ERROR, "mbedtls_x509write_crt_set_serial_raw returned %d\n", ret);
-        goto end;
+    {
+        mbedtls_mpi mpi_serial;
+        mbedtls_mpi_init(&mpi_serial);
+        ret = mbedtls_mpi_read_binary(&mpi_serial, serial, sizeof(serial));
+        if (ret != 0) {
+            av_log(NULL, AV_LOG_ERROR, "mbedtls_mpi_read_binary returned %d\n", ret);
+            mbedtls_mpi_free(&mpi_serial);
+            goto end;
+        }
+        ret = mbedtls_x509write_crt_set_serial(&crt, &mpi_serial);
+        mbedtls_mpi_free(&mpi_serial);
+        if (ret != 0) {
+            av_log(NULL, AV_LOG_ERROR, "mbedtls_x509write_crt_set_serial returned %d\n", ret);
+            goto end;
+        }
     }
 
     time(&now);
